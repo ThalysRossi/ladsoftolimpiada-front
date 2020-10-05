@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { Form, Input } from '@rocketseat/unform';
-import QuestionCard from '../../components/QuestionCard';
-import { connect } from 'react-redux';
-import * as Yup from 'yup';
+import React, { Component } from "react";
+import { Form, Input } from "@rocketseat/unform";
+import QuestionCard from "../../components/QuestionCard";
+import { connect } from "react-redux";
+import * as Yup from "yup";
 
-import Api from '../../services/api';
+import Api from "../../services/api";
 
-import leftArrow from '../../../assets/img/left.svg';
-import rightArrow from '../../../assets/img/right.svg';
-import questionMark from '../../../assets/img/question.svg';
+import leftArrow from "../../../assets/img/left.svg";
+import rightArrow from "../../../assets/img/right.svg";
+import questionMark from "../../../assets/img/question.svg";
 
-import { answerQuestionRequest } from '../../store/modules/score/actions';
+import { answerQuestionRequest } from "../../store/modules/score/actions";
 
-import './styles.css';
+import "./styles.css";
 
 const schema = Yup.object().shape({
   answer: Yup.string().required(),
@@ -32,17 +32,17 @@ class Dashboard extends Component {
       normal: [],
       hard: [],
     },
-    input: '',
+    input: "",
   };
 
   componentDidMount = async () => {
-    const request = await Api.get('/challenges');
+    const request = await Api.get("/challenges");
     const easy = request.data.filter((challenge) => challenge.level === 1);
     const normal = request.data.filter((challenge) => challenge.level === 2);
     const hard = request.data.filter((challenge) => challenge.level === 3);
 
     const { level } = this.props;
-    console.log('O LVL é', level);
+    console.log("O LVL é", level);
     this.setState({
       userLevel: level,
       currentLevel: 1,
@@ -58,7 +58,7 @@ class Dashboard extends Component {
     const { currentLevel } = this.state;
     const { level } = this.props;
 
-    if (e.target.id === 'next') {
+    if (e.target.id === "next") {
       if (currentLevel < level) {
         this.setState({
           currentLevel: currentLevel + 1,
@@ -66,7 +66,7 @@ class Dashboard extends Component {
       }
     }
 
-    if (e.target.id === 'previous') {
+    if (e.target.id === "previous") {
       if (currentLevel > 1) {
         this.setState({
           currentLevel: currentLevel - 1,
@@ -166,70 +166,68 @@ class Dashboard extends Component {
     const checkLevel = currentLevel <= userLevel ? currentLevel : userLevel;
 
     return (
-      <div className='dashboard'>
-        <div className='dashboard-left'>
-          <div className='db-left-header'>
+      <div className="dashboard">
+        <div className="dashboard-left">
+          <div className="db-left-header">
             <img
               src={leftArrow}
-              alt='voltar'
-              id='previous'
+              alt="voltar"
+              id="previous"
               onClick={this.changeLevel}
-            />
-            <h1>{`NÍVEL ${checkLevel}`}</h1>
+            />{" "}
+            <h1> {`NÍVEL ${checkLevel}`} </h1>{" "}
             <img
               src={rightArrow}
-              alt='avançar'
-              id='next'
+              alt="avançar"
+              id="next"
               onClick={this.changeLevel}
-            />
-          </div>
-
-          <div className='db-left-questions'>
-            {questions ? this.renderLevel(checkLevel) : null}
-          </div>
-        </div>
-
-        <div className='dashboard-right'>
+            />{" "}
+          </div>{" "}
+          <div className="db-left-questions">
+            {" "}
+            {questions ? this.renderLevel(checkLevel) : null}{" "}
+          </div>{" "}
+        </div>{" "}
+        <div className="dashboard-right">
           <h1>
-            <img src={questionMark} alt='desafio' />{' '}
-            {`QUESTÃO ${selectedQuestion.id || ''} - NÍVEL ${
-              selectedQuestion.level || ''
-            }`}
-          </h1>
-
-          <div className='db-right-question'>
-            {selectedQuestion.description}
-          </div>
-
+            {" "}
+            <img src={questionMark} alt="desafio" />{" "}
+            {`QUESTÃO ${selectedQuestion.id || ""} - NÍVEL ${
+              selectedQuestion.level || ""
+            }`}{" "}
+          </h1>{" "}
+          <div className="db-right-question">
+            <pre> {selectedQuestion.description} </pre>{" "}
+          </div>{" "}
           <Form
             schema={schema}
             onSubmit={() => this.handleSubmit(selectedQuestion.id)}
           >
+            {" "}
             {selectedQuestion.id && (
               <Input
-                name='answer'
-                id='answer'
-                placeholder='Insira sua resposta'
+                name="answer"
+                id="answer"
+                placeholder="Insira sua resposta"
                 onChange={this.handleInputChange}
                 value={this.state.input}
               />
-            )}
-
+            )}{" "}
             {selectedQuestion.id && (
-              <button type='submit' className='btn-answer'>
-                ENVIAR
+              <button type="submit" className="btn-answer">
+                ENVIAR{" "}
               </button>
-            )}
-          </Form>
-
-          <div className='db-right-alert'>
-            Mussum Ipsum, cacilds vidis litro abertis. Interagi no mé, cursus
-            quis, vehicula ac nisi. Quem num gosta di mé, boa gentis num é.
-            Interessantiss quisso pudia ce receita de bolis, mais bolis eu num
-            gostis. Nec orci ornare consequat. Praesent lacinia ultrices
-            consectetur. Sed non ipsum felis.
-          </div>
-        </div>
+            )}{" "}
+          </Form>{" "}
+          <div className="db-right-alert">
+            {" "}
+            Mussum Ipsum, cacilds vidis litro abertis.Interagi no mé, cursus
+            quis, vehicula ac nisi.Quem num gosta di mé, boa gentis num
+            é.Interessantiss quisso pudia ce receita de bolis, mais bolis eu num
+            gostis.Nec orci ornare consequat.Praesent lacinia ultrices
+            consectetur.Sed non ipsum felis.{" "}
+          </div>{" "}
+        </div>{" "}
       </div>
     );
   }
